@@ -1,0 +1,13 @@
+rabbitmq:
+  url: "amqp://guest:guest@localhost:5672/"
+  queue: "events_queue"
+
+server:
+  port: "8080"
+
+log:
+  file_path: "logs/event_relay.log"
+  max_size: 10      # Максимальный размер файла в MB
+  max_backups: 5    # Количество резервных копий логов
+  max_age: 30       # Количество дней хранения логов
+  compress: false   # Сжатие логов
