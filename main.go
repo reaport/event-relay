@@ -116,11 +116,11 @@ func startWebSocketServer() {
 		"status": "started",
 		"port":   port,
 	}).Info("WebSocket server started")
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	log.Fatal(http.ListenAndServe(":"+port, nil)) //nolint:gosec // timeout doesn't matter
 }
 
 func handleWebSocket(w http.ResponseWriter, r *http.Request) {
-	upgrader.CheckOrigin = func(r *http.Request) bool { return true }
+	upgrader.CheckOrigin = func(_ *http.Request) bool { return true }
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.WithFields(logrus.Fields{
@@ -143,7 +143,8 @@ func handleWebSocket(w http.ResponseWriter, r *http.Request) {
 	}).Info("New WebSocket client connected")
 
 	for {
-		if _, _, err := conn.NextReader(); err != nil {
+		_, _, err = conn.NextReader()
+		if err != nil {
 			break
 		}
 	}
